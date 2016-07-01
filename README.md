@@ -1,4 +1,4 @@
-# :bulb: Wykop - #wyzwanie #naukaprogramowania
+# :bulb: Wykop - #wyzwaniepython
 
 Pull requesty z sugestiami mile widziane :)
 
