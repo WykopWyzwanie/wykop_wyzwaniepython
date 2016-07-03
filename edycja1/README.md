@@ -1,5 +1,5 @@
 Skrypt gf.py tworzy k plików o losowych czasach dostępu do modyfikacji w
-katalogu, w którym został wywołany. Skrypt wypełnia pliki losową zawartością
+katalogu, w którym został wywołany. Ponadto wypełnia pliki losową zawartością,
 generując duplikaty, które rozwiązanie zadania w wersji trudniejszej powinno
 wykryć.
 
