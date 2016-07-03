@@ -12,7 +12,8 @@ A ankiecie wygrała 3 opcja więc oto pierwsze zadanie w historii **#wyzwaniepyt
      - skopiowac wszystkie pliki z danego roku do do jednego katalogu a poźniej to samo dla miesięcy
     Wersja trudna
      - To co łatwa
-     - Znaleźć wszystkie duplikaty.
+     - Znaleźć wszystkie duplikaty, najpóźniej zmodyfikowany przenieść
+       do katalogu jak w wersji łatwej, a pozostałe przenieść do katalogu o nazwie "duplikaty"
 
 ##### Przydatne biblioteki:
 * time
