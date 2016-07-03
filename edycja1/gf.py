@@ -7,6 +7,7 @@ import string
 
 
 RANDOM_DATA_LEN = 3
+WIN_LIMIT = 315532800
 
 def random_data():
     return "".join(random.SystemRandom().choice(
@@ -21,5 +22,5 @@ if __name__ == '__main__':
         f = tempfile.NamedTemporaryFile(dir='.', delete=False)
         with open(f.name, 'w') as tf:
             tf.write(rds[random.randint(0, n - 1)])
-        os.utime(f.name, (random.randint(0, int(time.time())),
-                            random.randint(0, int(time.time()))))
+        os.utime(f.name, (random.randint(WIN_LIMIT, int(time.time())),
+                          random.randint(WIN_LIMIT, int(time.time()))))
