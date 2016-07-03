@@ -6,7 +6,7 @@ import time
 import string
 
 
-RANDOM_DATA_LEN = 10
+RANDOM_DATA_LEN = 3
 
 def random_data():
     return "".join(random.SystemRandom().choice(
@@ -15,7 +15,7 @@ def random_data():
 if __name__ == '__main__':
     assert len(sys.argv) > 1
     k = int(sys.argv[1])
-    n = k // 3
+    n = k // 2
     rds = [random_data() for _ in range(n)]
     for _ in range(k):
         f = tempfile.NamedTemporaryFile(dir='.', delete=False)
