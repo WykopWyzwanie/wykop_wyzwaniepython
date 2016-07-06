@@ -40,4 +40,13 @@ Przykład użycia (tworzy 10 plików):
 
 Plik **test.zip** zawiera przykładowe dane testowe (1000 plików umieszczonych w katalogu **tst/**).
 
+***
+
+#### Skrypt testujący
+Skrypt **test_rozwiazania.py** sprawdza, czy wszystkie pliki w podanym katalogu są właściwie skatalogowane (tzn. leżą w katalogu **a/b**, gdzie **a** jest rokiem ostatniej modyfikacji pliku, a **b** miesiącem ostatniej modyfikacji). Skrypt nie sprawdza wersji trudniejszej.
+
+Przykład użycia (sprawdza pliki z katalogu **tst/**):
+
+    python test_rozwiazania.py tst
+
 #### Powodzenia!
