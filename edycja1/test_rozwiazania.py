@@ -1,10 +1,13 @@
+import datetime
 import os
 import os.path as path
 import sys
 import time
 
 def check_file(out_dir, in_dir, filepath):
-    ystr, mstr = time.strftime("%Y %m", time.gmtime(os.path.getmtime(filepath))).split(' ')
+    mdate = datetime.datetime.fromtimestamp(os.path.getmtime(filepath))
+    ystr = str(mdate.year)
+    mstr = ("{:0>2}").format(mdate.month)
     if out_dir == ystr and in_dir == mstr:
         return True
     else:
