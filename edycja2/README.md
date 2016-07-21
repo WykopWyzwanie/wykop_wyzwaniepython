@@ -38,9 +38,16 @@ linii, służy ona jedynie przedstawieniu szerokości kolumn, 5-15-60):
 #####***************%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   txt          5932B                                   #########################
  jpeg         10000B                                               #############
-  txt        203151B                                                    ########
+  mp3        203151B                                                    ########
   zip         43131B                                                        ####
 ```
+
+#### Wyjaśnienie
+Plików z rozszerzeniem `.txt` jest **6**, co stanowi **50%** wszystkich, więc przy `txt`
+powinno być **25** znaków `#` (**50%** z **50**). Plików z rozszerzeniem `.mp3` jest **2**, co
+stanowi **16,(6)%** wszystkich plików, zatem przy tym rozszerzeniu powinno być **8**
+znaków `#` (**16,(6)%** z 50 to **8,(3)** - zaokrąglamy to więc w dół). Analogicznie dla
+pozostałych rozszerzeń.
 
 ### Trudna
 ~~Zapisanie danych o plikach z danego katalogu do bazy danych (takie dane jak
