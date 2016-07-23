@@ -49,6 +49,8 @@ stanowi **16,(6)%** wszystkich plików, zatem przy tym rozszerzeniu powinno być
 znaków `#` (**16,(6)%** z 50 to **8,(3)** - zaokrąglamy to więc w dół). Analogicznie dla
 pozostałych rozszerzeń.
 
+Metoda wspomnianego wyżej zaokrąglania musi być kompatybilna z wbudowaną funkcją round.
+
 ### Trudna
 ~~Zapisanie danych o plikach z danego katalogu do bazy danych (takie dane jak
 ścieżka, rozmiar, rozszerzenie, data modyfikacji). Moglibyśmy to rozbudować o
