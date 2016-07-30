@@ -2,6 +2,8 @@ from argparse import ArgumentParser
 from collections import namedtuple
 from glob import glob
 from os.path import getsize, isfile
+import sys
+
 
 AccumulatedSize = namedtuple('AccumulatedSize', 'extension size files')
 
@@ -66,13 +68,26 @@ def test_answer(operating_dir, output_file):
     return True
 
 
+def test_db(operating_dir, db_path):
+    print('test_db')
+    return True
+
+
 if __name__ == '__main__':
     parser = ArgumentParser()
     parser.add_argument('operating_dir', metavar='operating_dir', type=str)
     parser.add_argument('output_file', metavar='output_file', type=str)
+    parser.add_argument('version', default='easy', type=str)
     args = parser.parse_args()
 
-    result = test_answer(args.operating_dir, args.output_file)
+    if args.version == 'easy':
+        result = test_answer(args.operating_dir, args.output_file)
+    elif args.version == 'hard':
+        result = test_db(args.operating_dir, args.output_file)
+    else:
+        print('Invalid option value: only "easy" (default)/"hard" '
+              'version allowed.''', file=sys.stderr)
+        sys.exit(1)
 
     if result:
         print('All checks OK.')
