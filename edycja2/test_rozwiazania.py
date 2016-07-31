@@ -4,6 +4,10 @@ from glob import glob
 from os.path import getsize, isfile
 import sys
 
+from sqlalchemy import Table, Column, Integer, String, \
+        create_engine, MetaData
+from sqlalchemy.sql import select
+
 
 AccumulatedSize = namedtuple('AccumulatedSize', 'extension size files')
 
@@ -68,8 +72,32 @@ def test_answer(operating_dir, output_file):
     return True
 
 
+def load_tables(meta, engine, *names):
+    tables = []
+    for name in names:
+        table = None
+        try:
+            table = Table(name, meta, autoload=True, autoload_with=engine)
+        except sqlalchemy.ext.NoSuchTableError:
+            print('Cannot read {} table from db.'.format(name))
+            raise
+        tables.append(table)
+    return tables
+
+
+def check_objects_table(rows):
+    pass
+
+
 def test_db(operating_dir, db_path):
-    print('test_db')
+    engine = create_engine('sqlite:///{}'.format(db_path))
+    meta = MetaData()
+    objects, cardinality, checksums = load_tables(
+        meta, engine, 'objects', 'cardinality', 'checksums')
+    conn = engine.connect()
+    s = select([objects])
+    res = engine.execute(s)
+    check_objects_table(res)
     return True
 
 
