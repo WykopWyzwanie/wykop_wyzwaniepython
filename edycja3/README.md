@@ -47,7 +47,7 @@ mtime: 2015-11-03
 ```
 
 #### Wymagania
- * rozwiązanie **musi** zawierać funkcję `parse(cmd, \*args, \*\*kwargs)`, która będzie interpretowała polecenie podane jako `cmd`
+ * rozwiązanie **musi** zawierać funkcję `parse(cmd, *args, **kwargs)`, która będzie interpretowała polecenie podane jako `cmd`
    z argumentami występującymi po nim oraz w przypadku poleceń wypisujących informacje (`pwd`, `ls`, `info`) zwróci napis je
    je zawierający; w przypadku pozostałych poleceń wykona związane z nimi akcje i zwróci **None** - pozwoli to wygodnie
    testować podsyłane rozwiązania i je ujednolici
