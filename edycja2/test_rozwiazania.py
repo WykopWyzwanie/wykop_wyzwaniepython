@@ -1,11 +1,15 @@
 from argparse import ArgumentParser
 from collections import namedtuple
 from glob import glob
+import hashlib
 from os.path import getsize, isfile
+import os
+import os.path
 import sys
 
+
 from sqlalchemy import Table, Column, Integer, String, \
-        create_engine, MetaData
+        create_engine, MetaData, ext, or_
 from sqlalchemy.sql import select
 
 
@@ -78,27 +82,47 @@ def load_tables(meta, engine, *names):
         table = None
         try:
             table = Table(name, meta, autoload=True, autoload_with=engine)
-        except sqlalchemy.ext.NoSuchTableError:
+        except:
             print('Cannot read {} table from db.'.format(name))
             raise
         tables.append(table)
     return tables
 
+def md5(filepath):
+    hash_md5 = hashlib.md5()
+    with open(filepath, "rb") as f:
+        for chunk in iter(lambda: f.read(4096), b""):
+            hash_md5.update(chunk)
+    return hash_md5.hexdigest()
 
-def check_objects_table(rows):
-    pass
+
+def check_files(query_result):
+    good = True
+    for fid, filepath, ftype, md5sum_str in query_result:
+        good = ftype == 'f'\
+            and os.path.exists(filepath)\
+            and md5(filepath) == md5sum_str\
+            and good
+    return good
 
 
 def test_db(operating_dir, db_path):
+    is_ok = True
     engine = create_engine('sqlite:///{}'.format(db_path))
     meta = MetaData()
     objects, cardinality, checksums = load_tables(
         meta, engine, 'objects', 'cardinality', 'checksums')
     conn = engine.connect()
-    s = select([objects])
-    res = engine.execute(s)
-    check_objects_table(res)
-    return True
+    files_stmt = select([objects.c.id, objects.c.path, objects.c.type,
+        checksums.c.checksum]).where(objects.c.id == checksums.c.id)
+    dirs_stmt = select([objects.c.id, objects.c.path, objects.c.type,
+        cardinality.c.nbr_of_elements]).where(objects.c.id == cardinality.c.id)
+    is_ok = check_files(engine.execute(files_stmt)) and is_ok
+    # dirs_stmt = select([objects]).where(objects.type == 'd').join(cardinality)
+    # other_stmt = select([objects]).where(objects.type == 'o')
+    # res = engine.execute(s)
+    # check_objects_table(res)
+    return is_ok
 
 
 if __name__ == '__main__':
