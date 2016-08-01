@@ -8,8 +8,7 @@ import os.path
 import sys
 
 
-from sqlalchemy import Table, Column, Integer, String, \
-        create_engine, MetaData, ext, or_
+from sqlalchemy import Table, Column, Integer, String, create_engine, MetaData, ext, or_
 from sqlalchemy.sql import select
 
 
@@ -106,8 +105,28 @@ def check_files(query_result):
     return good
 
 
+def calculate_cardinality(dirpath):
+    cardinality = 0
+    for path in os.listdir(dirpath):
+        object_path = os.path.join(dirpath, path)
+        cardinality += calculate_cardinality(object_path) + 1\
+                if os.path.isdir(object_path) else 1
+    return cardinality
+
+
+def check_dirs(query_result):
+    good = True
+    cardinality_dict = {}
+    for did, dirpath, dtype, cardinality in query_result:
+        if dirpath not in cardinality_dict:
+            cardinality_dict[dirpath] = calculate_cardinality(dirpath)
+        good = cardinality == cardinality_dict[dirpath]\
+            and dtype == 'd'\
+            and good
+    return good
+
+
 def test_db(operating_dir, db_path):
-    is_ok = True
     engine = create_engine('sqlite:///{}'.format(db_path))
     meta = MetaData()
     objects, cardinality, checksums = load_tables(
@@ -117,12 +136,8 @@ def test_db(operating_dir, db_path):
         checksums.c.checksum]).where(objects.c.id == checksums.c.id)
     dirs_stmt = select([objects.c.id, objects.c.path, objects.c.type,
         cardinality.c.nbr_of_elements]).where(objects.c.id == cardinality.c.id)
-    is_ok = check_files(engine.execute(files_stmt)) and is_ok
-    # dirs_stmt = select([objects]).where(objects.type == 'd').join(cardinality)
-    # other_stmt = select([objects]).where(objects.type == 'o')
-    # res = engine.execute(s)
-    # check_objects_table(res)
-    return is_ok
+    return check_files(engine.execute(files_stmt))\
+        and check_dirs(engine.execute(dirs_stmt))
 
 
 if __name__ == '__main__':
