@@ -1,7 +1,16 @@
 from argparse import ArgumentParser
 from collections import namedtuple
 from glob import glob
+import hashlib
 from os.path import getsize, isfile
+import os
+import os.path
+import sys
+
+
+from sqlalchemy import Table, Column, Integer, String, create_engine, MetaData, ext, or_
+from sqlalchemy.sql import select
+
 
 AccumulatedSize = namedtuple('AccumulatedSize', 'extension size files')
 
@@ -66,13 +75,86 @@ def test_answer(operating_dir, output_file):
     return True
 
 
+def load_tables(meta, engine, *names):
+    tables = []
+    for name in names:
+        table = None
+        try:
+            table = Table(name, meta, autoload=True, autoload_with=engine)
+        except:
+            print('Cannot read {} table from db.'.format(name))
+            raise
+        tables.append(table)
+    return tables
+
+def md5(filepath):
+    hash_md5 = hashlib.md5()
+    with open(filepath, "rb") as f:
+        for chunk in iter(lambda: f.read(4096), b""):
+            hash_md5.update(chunk)
+    return hash_md5.hexdigest()
+
+
+def check_files(query_result):
+    good = True
+    for fid, filepath, ftype, md5sum_str in query_result:
+        good = ftype == 'f'\
+            and os.path.exists(filepath)\
+            and md5(filepath) == md5sum_str\
+            and good
+    return good
+
+
+def calculate_cardinality(dirpath):
+    cardinality = 0
+    for path in os.listdir(dirpath):
+        object_path = os.path.join(dirpath, path)
+        cardinality += calculate_cardinality(object_path) + 1\
+                if os.path.isdir(object_path) else 1
+    return cardinality
+
+
+def check_dirs(query_result):
+    good = True
+    cardinality_dict = {}
+    for did, dirpath, dtype, cardinality in query_result:
+        if dirpath not in cardinality_dict:
+            cardinality_dict[dirpath] = calculate_cardinality(dirpath)
+        good = cardinality == cardinality_dict[dirpath]\
+            and dtype == 'd'\
+            and good
+    return good
+
+
+def test_db(operating_dir, db_path):
+    engine = create_engine('sqlite:///{}'.format(db_path))
+    meta = MetaData()
+    objects, cardinality, checksums = load_tables(
+        meta, engine, 'objects', 'cardinality', 'checksums')
+    conn = engine.connect()
+    files_stmt = select([objects.c.id, objects.c.path, objects.c.type,
+        checksums.c.checksum]).where(objects.c.id == checksums.c.id)
+    dirs_stmt = select([objects.c.id, objects.c.path, objects.c.type,
+        cardinality.c.nbr_of_elements]).where(objects.c.id == cardinality.c.id)
+    return check_files(engine.execute(files_stmt))\
+        and check_dirs(engine.execute(dirs_stmt))
+
+
 if __name__ == '__main__':
     parser = ArgumentParser()
     parser.add_argument('operating_dir', metavar='operating_dir', type=str)
     parser.add_argument('output_file', metavar='output_file', type=str)
+    parser.add_argument('version', default='easy', type=str)
     args = parser.parse_args()
 
-    result = test_answer(args.operating_dir, args.output_file)
+    if args.version == 'easy':
+        result = test_answer(args.operating_dir, args.output_file)
+    elif args.version == 'hard':
+        result = test_db(args.operating_dir, args.output_file)
+    else:
+        print('Invalid option value: only "easy" (default)/"hard" '
+              'version allowed.''', file=sys.stderr)
+        sys.exit(1)
 
     if result:
         print('All checks OK.')
