@@ -1,5 +1,6 @@
 import os
 import shutil
+from datetime import datetime
 from glob import glob
 from os.path import abspath, getctime, getmtime, getsize, isdir, isfile
 
@@ -34,8 +35,8 @@ class CmdHandlers():
             ('sciezka', abspath(path)),
             ('rozmiar', '{}B'.format(sum(filesizes))),
             ('liczba_plikow', sum(isfile(f) for f in os.listdir()) if isdir(path) else None),
-            ('ctime', getctime(path)),
-            ('mtime', getmtime(path)),
+            ('ctime', datetime.fromtimestamp(getctime(path)).date()),
+            ('mtime', datetime.fromtimestamp(getmtime(path)).date()),
         ] if value is not None)
 
     def _lst_file_sizes(path):
