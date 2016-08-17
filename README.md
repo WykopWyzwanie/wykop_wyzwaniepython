@@ -25,13 +25,14 @@ TBA
 ## [1.2. edycja](http://www.wykop.pl/wpis/18863629)
 
 ### łatwe
-* @Engineer_Mordimer
+- @Engineer_Mordimer
 - @yawa2
 - @barteb
 - @g33k 
 
 ### trudne
 
-TBA
+- [@abdulafaja](https://github.com/abdulafaja/PyDictAnalyzer)
+- [@yawa2](https://git.io/v6Kl1)
 
 ## [1.3. edycja]()
