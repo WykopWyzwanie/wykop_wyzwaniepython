@@ -7,6 +7,14 @@ nauce programowania w serwisie Wykop.
 
 Więcej informacji na stronie [wiki projektu](https://github.com/qofnaught/wykop_wyzwanie_naukaprogramowania/wiki).
 
+# Tematyka zadań (po trzy edycje na każdą)
+
+- [x] Operacje na plikach.
+- [ ] Wątki/komunikacja między procesami. [w trakcie]
+- [ ] "Od zera do webmastera".
+- [ ] PyGame.
+- [ ] Wykop API.
+
 # Hall of Fame
 #### ...czyli najlepsze rozwiązania (w niektórych przypadkach inne się nie pojawiły; nicki z Wykopu)
 
