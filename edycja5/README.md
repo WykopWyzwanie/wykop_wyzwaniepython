@@ -5,17 +5,14 @@ W tej edycji **nie ma podziału na wersję łatwą i trudną**, wszyscy rozwiąz
 ### Specyfikacja
 Do napisania jest znana pewnie wszystkim gra [**"Kółko i krzyżyk"**](https://pl.wikipedia.org/wiki/K%C3%B3%C5%82ko_i_krzy%C5%BCyk),
 w wersji dla dwóch graczy, grających na jednym komputerze. Dodatkowym, utrudniającym implementację, wymaganiem jest
-wykorzystanie modułu [multiprocessing](https://docs.python.org/3/library/multiprocessing.html) i uruchomienie dwóch okien
-do gry (konsoli) w osobnych procesach z wykorzystaniem klasy
-[Process](https://docs.python.org/3/library/multiprocessing.html#the-process-class) i komunikującymi się za pomocą
-[Pipe'a](https://docs.python.org/3/library/multiprocessing.html#multiprocessing.Pipe).
+wykorzystanie biblioteki [0MQ](http://zeromq.org/) i komunikacja przez serwer, w dwóch oknach konsoli.
 
-Użyteczne przykłady można znaleźć w dokumentacji modułu [multiprocessing](https://docs.python.org/3/library/multiprocessing.html).
+Użyteczne przykłady można znaleźć w Sieci, np. [tutaj](https://www.digitalocean.com/community/tutorials/how-to-work-with-the-zeromq-messaging-library)
 
 ===
 
 ### Czas na wykonanie
-**7 dni, do 30.08.2016 (ok. 22:00)**
+**7 dni, do poniedziałku, 29.08.2016 (ok. 22:00)**
 
 ===
 
