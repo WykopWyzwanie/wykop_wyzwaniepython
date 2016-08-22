@@ -22,5 +22,6 @@ zachęcamy do pytania o pomoc w tagu [#wyzwaniepythonpomoc](http://www.wykop.pl/
 
 ### Linki:
 * [Spam lista](http://mirkolisty.pvu.pl/list/qIRpnpHg3WM8YOv5)
+* [pyzmq](http://zeromq.org/bindings:python)
 
 ## Powodzenia!
